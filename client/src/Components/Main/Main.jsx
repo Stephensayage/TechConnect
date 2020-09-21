@@ -6,11 +6,24 @@ import Header from './Shared/Header/Header'
 import Register from '../Register/Register';
 import UserProfile from '../UserProfile/UserProfile';
 import SignIn from '../SignIn/SignIn';
+import { readAllPosts } from '../../Services/posts';
 
 export default function Main(props) {
 
   const { setCurrentUser, currentUser } = props;
 
+  const [posts, setPosts] = useState([])
+  const [comments, setComments] = useState([])
+
+
+  useEffect(() => {
+    getPosts()
+  }, [])
+
+  const getPosts = async () => {
+    const getAllPosts = readAllPosts()
+    setPosts(getAllPosts)
+  }
 
 
   return (<>
@@ -38,6 +51,8 @@ export default function Main(props) {
     <Route path='/users/:id' render={(props) => (
       <UserProfile
         {...props}
+        post={posts}
+        setPosts={setPosts}
         setCurrentUser={setCurrentUser}
         currentUser={currentUser}
       />
